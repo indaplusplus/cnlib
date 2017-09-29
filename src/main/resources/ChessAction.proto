@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "se.kth.cnlib.protobuf";
+
+message ChessAction {
+    string move = 1; // Standard algebraic chess notation
+
+    string message = 2; // General info that could be nice to send. e.g. on error, send why.
+
+    // State of the chess game after the move sent has been made locally. i.e. what the board will look like.
+    string board = 3; // representation of the board Uppercase white, row 0 is white's side. \n separates the rows.
+
+    // Whos turn after the sent move has been made.
+    enum Turn{WHITE = 0; BLACK = 1;}
+    Turn currentplayer = 4;
+}
