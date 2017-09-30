@@ -4,27 +4,20 @@ import java.io.IOException;
 import se.kth.cnlib.ChessServer;
 import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction;
 
-public class ExampleServer implements Runnable {
+public class ExampleServer extends ChessServer {
 
-  private boolean isRunning = true;
-  private ChessServer server;
-
-  public ExampleServer() {
-    this.server = new ChessServer();
-  }
-
+  @Override
   public void run() {
-    while(this.isRunning) {
+    while(!this.isInterrupted()) {
       try {
-        if (this.server.getSocket() == null) {
-          this.server.accept();
+        if (this.getSocket() == null) {
+          this.accept();
         }
 
-        if (this.server.getSocket().isConnected()) {
-          ChessAction action = this.server.recieve();
+        if (this.getSocket().isConnected()) {
+          ChessAction action = this.receive();
           System.out.println(action.getMessage());
           Thread.sleep(100);
-          //this.server.getSocket().close();
         }
       } catch (IOException e) {
         e.printStackTrace();

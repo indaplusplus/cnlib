@@ -13,7 +13,6 @@ public class ChessServer extends ChessProtocol {
   }
 
   /**
-   * aaa.
    * @param port Port number.
    * @throws IOException Exception.
    */
@@ -29,4 +28,6 @@ public class ChessServer extends ChessProtocol {
     this.setSocket(serverSocket.accept());
   }
 
+  @Override
+  public void run() {}
 }

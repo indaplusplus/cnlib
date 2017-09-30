@@ -35,8 +35,8 @@ public class ChessClient extends ChessProtocol {
     this.setSocket(
         new Socket(this.getHost(), this.getPort())
     );
-    if (!this.getSocket().isConnected())
-      this.getSocket().connect(this.getSocket().getLocalSocketAddress());
   }
 
+  @Override
+  public void run() {}
 }

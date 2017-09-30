@@ -7,7 +7,7 @@ import java.util.List;
 import se.kth.cnlib.events.ConnectEvent;
 import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction;
 
-public class ChessProtocol {
+public abstract class ChessProtocol extends Thread {
 
   public static final int DEFAULT_PORT = 0xdad; //3501
 
@@ -15,6 +15,8 @@ public class ChessProtocol {
   private int port;
   private List events = new ArrayList();
 
+  @Override
+  public abstract void run();
 
   /*
     this.addConnectEvent(
@@ -86,7 +88,7 @@ public class ChessProtocol {
    * @return
    * @throws IOException
    */
-  public ChessAction recieve() throws IOException {
+  public ChessAction receive() throws IOException {
     return ChessAction.parseDelimitedFrom(this.getSocket().getInputStream());
   }
 }
