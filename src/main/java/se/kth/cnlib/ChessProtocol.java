@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import se.kth.cnlib.events.ConnectEvent;
-import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction;
+import se.kth.inda17plusplus.MoveOuterClass.Move;
 
 public abstract class ChessProtocol extends Thread {
 
@@ -63,19 +63,17 @@ public abstract class ChessProtocol extends Thread {
 
   /**
    *
-   * @param move Move in chess notation.
-   * @param debugMessage Message, use is mainly for debugging.
-   * @param boardAfterMove String representation of what the board should look like after the move (also used for debugging).
-   * @param player Which player executed the move.
+   * @param move The move in Algebraic Notation, + for checks, # for checkmates, 1-0 / 0-1 / 1/2-1/2 for game end.
+   * @param resultingState The state after the move in Forsyth-Edwards Notation.
+   * @param lastMoveErrored Was the last move invalid?
    */
-  public void send(String move, String debugMessage, String boardAfterMove, ChessAction.Turn player) throws IOException{
-    ChessAction.Builder builder = ChessAction.newBuilder();
+  public void send(String move, String resultingState, boolean lastMoveErrored) throws IOException{
+    Move.Builder builder = Move.newBuilder();
     builder.setMove(move);
-    builder.setMessage(debugMessage);
-    builder.setBoard(boardAfterMove);
-    builder.setCurrentplayerValue(player.getNumber());
+    builder.setResultingState(resultingState);
+    builder.setLastMoveErrored(lastMoveErrored);
 
-    ChessAction action = builder.build();
+    Move action = builder.build();
     action.writeDelimitedTo(this.getSocket().getOutputStream());
 
     //PrintWriter writer = new PrintWriter(this.getSocket().getOutputStream());
@@ -88,7 +86,7 @@ public abstract class ChessProtocol extends Thread {
    * @return
    * @throws IOException
    */
-  public ChessAction receive() throws IOException {
-    return ChessAction.parseDelimitedFrom(this.getSocket().getInputStream());
+  public Move receive() throws IOException {
+    return Move.parseDelimitedFrom(this.getSocket().getInputStream());
   }
 }
