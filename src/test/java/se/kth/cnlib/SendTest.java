@@ -2,14 +2,12 @@ package se.kth.cnlib;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import org.junit.Test;
-import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction.Turn;
 
 public class SendTest {
 
-  private String msgOne = "";
-  private String msgTwo = "";
+  private boolean msgOne;
+  private boolean msgTwo;
 
   @Test
   public void sendTest() {
@@ -19,10 +17,10 @@ public class SendTest {
         try {
           accept();
 
-          msgOne = this.receive().getMessage();
+          msgOne = this.receive().getLastMoveErrored();
           Thread.sleep(100);
 
-          msgTwo = this.receive().getMessage();
+          msgTwo = this.receive().getLastMoveErrored();
           Thread.sleep(100);
 
           getSocket().close();
@@ -38,10 +36,10 @@ public class SendTest {
         try {
           connect();
 
-          this.send("A5-B6", "CAT", "idk, you ask me", Turn.WHITE);
+          this.send("", "", true);
           Thread.sleep(100);
 
-          this.send("A5-B6", "HAT", "idk, you ask me", Turn.BLACK);
+          this.send("", "", false);
           Thread.sleep(100);
 
           getSocket().close();
@@ -60,7 +58,7 @@ public class SendTest {
       } catch (InterruptedException e) {}
     }
 
-    assertTrue(msgOne.equals("CAT"));
-    assertTrue(msgTwo.equals("HAT"));
+    assertTrue(msgOne);
+    assertTrue(!msgTwo);
   }
 }

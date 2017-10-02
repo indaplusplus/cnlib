@@ -1,7 +1,6 @@
 package se.kth.cnlib.examples;
 
 import se.kth.cnlib.ChessClient;
-import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction.Turn;
 
 public class ExampleClient extends ChessClient {
 
@@ -15,7 +14,7 @@ public class ExampleClient extends ChessClient {
         if (this.getSocket() == null) {
           connect();
         } else if (this.getSocket().isConnected()) {
-          this.send("A5-B6", "I'D LIKE TO SOLVE THE PUZZLE", "idk, you ask me", Turn.WHITE);
+          this.send("", "", true);
           Thread.sleep(100);
           //client.getSocket().close();
         }

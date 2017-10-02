@@ -2,7 +2,7 @@ package se.kth.cnlib.examples;
 
 import java.io.IOException;
 import se.kth.cnlib.ChessServer;
-import se.kth.cnlib.protobuf.ChessActionOuterClass.ChessAction;
+import se.kth.inda17plusplus.MoveOuterClass.Move;
 
 public class ExampleServer extends ChessServer {
 
@@ -15,8 +15,8 @@ public class ExampleServer extends ChessServer {
         }
 
         if (this.getSocket().isConnected()) {
-          ChessAction action = this.receive();
-          System.out.println(action.getMessage());
+          Move action = this.receive();
+          System.out.println(action.getLastMoveErrored());
           Thread.sleep(100);
         }
       } catch (IOException e) {
